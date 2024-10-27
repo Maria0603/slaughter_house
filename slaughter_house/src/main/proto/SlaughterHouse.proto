@@ -12,13 +12,12 @@ service FirstStationService {
 
 service SecondStationService {
     rpc CutAnimal(CutAnimalRequest) returns (CutAnimalResponse);
-    rpc PackProduct(PackProductRequest) returns (PackProductResponse);
+    rpc PutPartOnTray(PutProductOnTrayRequest) returns (PutProductOnTrayResponse);
 }
 
 service ThirdStationService {
     rpc PackProduct(PackProductRequest) returns (PackProductResponse);
 }
-
 
 message Animal {
   int64 animalID = 1;
@@ -29,20 +28,26 @@ message Animal {
 
 // Message representing a part of the animal
 message Part {
-    string partId = 1;        // Unique ID for the part
+    int64 partId = 1;        // Unique ID for the part
     string partType = 2;      // e.g., "leg", "loin"
     float partWeight = 3;     // Weight of the part
-    string animalId = 4;      // ID of the animal this part came from
+    int64 animalId = 4;      // ID of the animal this part came from
 }
 
 message Product {
-    string productId = 1;           // Unique ID for the product
+    int64 productId = 1;           // Unique ID for the product
     string productType = 2;         // Type of product (half an animal, supermarket pack, etc.)
     repeated Part parts = 3;         // List of parts included in the product
     float productWeight = 5;          // Weight of the product
 }
 
 
+message Tray {
+    int64 trayId = 1;
+    string trayType = 2;        // e.g., "wings", "bellies"
+    string animalType = 3;      // e.g., "chicken", "pig"
+    repeated Part parts = 4;    // List of parts on the tray
+}
 
 // Message for registering an animal
 message RegisterAnimalRequest {
@@ -74,17 +79,25 @@ message CutAnimalResponse {
     repeated Part parts = 2;   // List of parts generated
 }
 
+message PutProductOnTrayRequest {
+    repeated Part parts = 1;       // List of parts to put on the tray
+}
+
+message PutProductOnTrayResponse {
+    bool success = 1;              // Putting parts on tray success status
+    string message = 2;            // Response message
+    repeated Part parts = 3;
+}
+
 // Message for packing products
 message PackProductRequest {
-    repeated Part parts = 1;       // List of parts to pack
-    string productType = 2;        // Type of product to pack
-
+    repeated  Tray trays = 1;       // List of parts to pack
 }
 
 message PackProductResponse {
     bool success = 1;              // Packing success status
     string message = 2;            // Response message
-    Product product = 3;           // Packed product
+    repeated Product products = 3;           // Packed product
 }
 
 
