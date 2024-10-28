@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @GrpcService
+@Service
 class SecondStationImpl
     extends SecondStationServiceGrpc.SecondStationServiceImplBase {
 
@@ -21,8 +22,8 @@ class SecondStationImpl
   //private final ThirdStationServiceGrpc.ThirdStationServiceBlockingStub thirdStationStub;
 
 
-   public SecondStationImpl(IPersistence persistence) {
-    this.persistence = persistence;
+   public SecondStationImpl() {
+
   /*  ArrayList<Part> parts = new ArrayList<>();
     ArrayList<Product> products = new ArrayList<>();*/
 
@@ -39,7 +40,7 @@ class SecondStationImpl
     CutAnimalResponse response;
 
     if (animal.isInitialized()) {
-      List<Part> generatedParts = new ArrayList<>();
+      List<Part> generatedParts;
       String animalType = animal.getAnimalType();
 
       // Cut based on animal type

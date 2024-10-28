@@ -1,3 +1,4 @@
+/*
 package org.example.slaughter_house.third_station.service;
 
 import net.devh.boot.grpc.server.service.GrpcService;
@@ -169,3 +170,4 @@ public class ThirdStationImpl extends ThirdStationServiceGrpc.ThirdStationServic
     return parts.stream().allMatch(part ->
         part.getAnimalId() == (commonAnimalType) && part.getPartType().equals(commonPartType)); }
   }
+*/
