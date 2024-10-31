@@ -1,0 +1,107 @@
+syntax = "proto3";
+
+package proto;
+
+option java_multiple_files = true;
+option java_package = "org.example.slaughter_house.grpc";
+
+service FirstStationService {
+    rpc RegisterAnimal(RegisterAnimalRequest) returns (RegisterAnimalResponse);
+    rpc WeightAnimal(WeightAnimalRequest) returns (WeightAnimalResponse);
+}
+
+service SecondStationService {
+    rpc CutAnimal(CutAnimalRequest) returns (CutAnimalResponse);
+    rpc PutPartOnTray(PutProductOnTrayRequest) returns (PutProductOnTrayResponse);
+}
+
+service ThirdStationService {
+    rpc PackProduct(PackProductRequest) returns (PackProductResponse);
+}
+
+message Animal {
+  int64 animalID = 1;
+  string animalType = 2;    //"cow", "chicken", "pig"..
+  float weightKilos = 3;
+}
+
+
+// Message representing a part of the animal
+message Part {
+    int64 partId = 1;        // Unique ID for the part
+    string partType = 2;      // e.g., "leg", "loin"
+    float partWeight = 3;     // Weight of the part
+    int64 animalId = 4;      // ID of the animal this part came from
+}
+
+message Product {
+    int64 productId = 1;           // Unique ID for the product
+    string productType = 2;         // Type of product (half an animal, supermarket pack, etc.)
+    repeated Part parts = 3;         // List of parts included in the product
+    float productWeight = 5;          // Weight of the product
+}
+
+
+message Tray {
+    int64 trayId = 1;
+    string trayType = 2;        // e.g., "wings", "bellies"
+    string animalType = 3;      // e.g., "chicken", "pig"
+    repeated Part parts = 4;    // List of parts on the tray
+}
+
+// Message for registering an animal
+message RegisterAnimalRequest {
+   Animal animal = 1;
+}
+
+message RegisterAnimalResponse {
+    bool success = 1;          // Registration success status
+    string message = 2;        // Response message
+}
+
+message WeightAnimalRequest {
+    Animal animal = 1;
+}
+
+message WeightAnimalResponse {
+    bool success = 1;          // Weighing success status
+    string message = 2;        // Response message
+    float weight = 3;          // Weight of the animal
+}
+
+// Message for cutting an animal into parts
+message CutAnimalRequest {
+   Animal animal = 1;
+}
+
+message CutAnimalResponse {
+    bool success = 1;          // Cutting success status
+    repeated Part parts = 2;   // List of parts generated
+}
+
+message PutProductOnTrayRequest {
+    repeated Part parts = 1;       // List of parts to put on the tray
+}
+
+message PutProductOnTrayResponse {
+    bool success = 1;              // Putting parts on tray success status
+    string message = 2;            // Response message
+    repeated Part parts = 3;
+}
+
+// Message for packing products
+message PackProductRequest {
+    repeated  Tray trays = 1;       // List of parts to pack
+}
+
+message PackProductResponse {
+    bool success = 1;              // Packing success status
+    string message = 2;            // Response message
+    repeated Product products = 3;           // Packed product
+}
+
+
+
+
+
+
